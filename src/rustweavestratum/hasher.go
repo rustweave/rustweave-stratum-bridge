@@ -1,4 +1,4 @@
-package kaspastratum
+package rustweavestratum
 
 import (
 	"bytes"
@@ -9,8 +9,8 @@ import (
 	"log"
 	"math/big"
 
-	"github.com/kaspanet/kaspad/app/appmessage"
-	"golang.org/x/crypto/blake2b"
+	"github.com/rustweave-network/rustweaved/app/appmessage"
+	"lukechampine.com/blake3"
 )
 
 // static value definitions to avoid overhead in diff translations
@@ -21,19 +21,19 @@ var (
 )
 
 // Basically three different ways of representing difficulty, each used on
-// different occasions.  All 3 are updated when the stratum diff is set via 
+// different occasions.  All 3 are updated when the stratum diff is set via
 // the setDiffValue method
-type kaspaDiff struct {
+type rustweaveDiff struct {
 	hashValue   float64  // previously known as shareValue
 	diffValue   float64  // previously known as fixedDifficulty
 	targetValue *big.Int // previously know as fixedDifficultyBI
 }
 
-func newKaspaDiff() *kaspaDiff {
-	return &kaspaDiff{}
+func newrustweaveDiff() *rustweaveDiff {
+	return &rustweaveDiff{}
 }
 
-func (k *kaspaDiff) setDiffValue(diff float64) {
+func (k *rustweaveDiff) setDiffValue(diff float64) {
 	k.diffValue = diff
 	k.targetValue = DiffToTarget(diff)
 	k.hashValue = DiffToHash(diff)
@@ -55,10 +55,10 @@ func DiffToHash(diff float64) float64 {
 }
 
 func SerializeBlockHeader(template *appmessage.RPCBlock) ([]byte, error) {
-	hasher, err := blake2b.New(32, []byte("BlockHash"))
-	if err != nil {
-		return nil, err
-	}
+	var fixedSizeKey [32]byte
+	copy(fixedSizeKey[:], "BlockHash")
+	hasher := blake3.New(32, fixedSizeKey[:])
+
 	write16(hasher, uint16(template.Header.Version))
 	write64(hasher, uint64(len(template.Header.Parents)))
 	for _, v := range template.Header.Parents {

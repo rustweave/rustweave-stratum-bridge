@@ -1,8 +1,8 @@
-# Kaspa Stratum Adapter
+# rustweave Stratum Adapter
 
-This is a lightweight daemon that allows mining to a local (or remote) kaspa node using stratum-base miners.
+This is a lightweight daemon that allows mining to a local (or remote) rustweave node using stratum-base miners.
 
-This daemon is confirmed working with the miners below in both dual-mining and kaspa-only modes (for those that support it) and Windows/MacOs/Linux/HiveOs.
+This daemon is confirmed working with the miners below in both dual-mining and rustweave-only modes (for those that support it) and Windows/MacOs/Linux/HiveOs.
 * bzminer
 * lolminer
 * srbminer
@@ -14,9 +14,9 @@ Discord discussions/issues: [here](https://discord.com/channels/5991532306598461
 
 Huge shoutout to https://github.com/KaffinPX/KStratum for the inspiration
   
-Tips appreciated: `kaspa:qp9v6090sr8jjlkq7r3f4h9un5rtfhu3raknfg3cca9eapzee57jzew0kxwlp`
+Tips appreciated: `rustweave:qp9v6090sr8jjlkq7r3f4h9un5rtfhu3raknfg3cca9eapzee57jzew0kxwlp`
 
-Try my 0-fee [Kaspa Pool](http://ghost-pool.io/) built with this code!
+Try my 0-fee [rustweave Pool](http://ghost-pool.io/) built with this code!
 
 
 ## Hive Setup
@@ -33,7 +33,7 @@ Shares-based work allocation with miner-like periodic stat output:
 
 Optional monitoring UI:
 
-https://github.com/onemorebsmith/kaspa-stratum-bridge/blob/main/monitoring-setup.md
+https://github.com/onemorebsmith/rustweave-stratum-bridge/blob/main/monitoring-setup.md
 
 ![image](https://user-images.githubusercontent.com/59971111/192025446-f20d74a5-f9e0-4290-b98b-9f56af8f23b4.png)
 
@@ -42,7 +42,7 @@ https://github.com/onemorebsmith/kaspa-stratum-bridge/blob/main/monitoring-setup
 
 Prometheus API:
 
-If the app is run with the `-prom={port}` flag the application will host stats on the port specified by `{port}`, these stats are documented in the file [prom.go](src/kaspastratum/prom.go). This is intended to be use by prometheus but the stats can be fetched and used independently if desired. `curl http://localhost:2114/metrics | grep ks_` will get a listing of current stats. All published stats have a `ks_` prefix for ease of use.
+If the app is run with the `-prom={port}` flag the application will host stats on the port specified by `{port}`, these stats are documented in the file [prom.go](src/rustweavestratum/prom.go). This is intended to be use by prometheus but the stats can be fetched and used independently if desired. `curl http://localhost:2114/metrics | grep ks_` will get a listing of current stats. All published stats have a `ks_` prefix for ease of use.
 
 ```
 user:~$ curl http://localhost:2114/metrics | grep ks_
@@ -57,14 +57,14 @@ ks_network_block_count 271966
 ks_network_difficulty_gauge 1.2526479386202519e+14
 # HELP ks_valid_share_counter Number of shares found by worker over time
 # TYPE ks_valid_share_counter counter
-ks_valid_share_counter{ip="192.168.0.17",miner="SRBMiner-MULTI/1.0.8",wallet="kaspa:qzk3uh2twkhu0fmuq50mdy3r2yzuwqvstq745hxs7tet25hfd4egcafcdmpdl",worker="002"} 276
-ks_valid_share_counter{ip="192.168.0.24",miner="BzMiner-v11.1.0",wallet="kaspa:qzk3uh2twkhu0fmuq50mdy3r2yzuwqvstq745hxs7tet25hfd4egcafcdmpdl",worker="003"} 43
-ks_valid_share_counter{ip="192.168.0.65",miner="BzMiner-v11.1.0",wallet="kaspa:qzk3uh2twkhu0fmuq50mdy3r2yzuwqvstq745hxs7tet25hfd4egcafcdmpdl",worker="001"} 307
+ks_valid_share_counter{ip="192.168.0.17",miner="SRBMiner-MULTI/1.0.8",wallet="rustweave:qzk3uh2twkhu0fmuq50mdy3r2yzuwqvstq745hxs7tet25hfd4egcafcdmpdl",worker="002"} 276
+ks_valid_share_counter{ip="192.168.0.24",miner="BzMiner-v11.1.0",wallet="rustweave:qzk3uh2twkhu0fmuq50mdy3r2yzuwqvstq745hxs7tet25hfd4egcafcdmpdl",worker="003"} 43
+ks_valid_share_counter{ip="192.168.0.65",miner="BzMiner-v11.1.0",wallet="rustweave:qzk3uh2twkhu0fmuq50mdy3r2yzuwqvstq745hxs7tet25hfd4egcafcdmpdl",worker="001"} 307
 # HELP ks_worker_job_counter Number of jobs sent to the miner by worker over time
 # TYPE ks_worker_job_counter counter
-ks_worker_job_counter{ip="192.168.0.17",miner="SRBMiner-MULTI/1.0.8",wallet="kaspa:qzk3uh2twkhu0fmuq50mdy3r2yzuwqvstq745hxs7tet25hfd4egcafcdmpdl",worker="002"} 3471
-ks_worker_job_counter{ip="192.168.0.24",miner="BzMiner-v11.1.0",wallet="kaspa:qzk3uh2twkhu0fmuq50mdy3r2yzuwqvstq745hxs7tet25hfd4egcafcdmpdl",worker="003"} 3399
-ks_worker_job_counter{ip="192.168.0.65",miner="BzMiner-v11.1.0",wallet="kaspa:qzk3uh2twkhu0fmuq50mdy3r2yzuwqvstq745hxs7tet25hfd4egcafcdmpdl",worker="001"} 3425
+ks_worker_job_counter{ip="192.168.0.17",miner="SRBMiner-MULTI/1.0.8",wallet="rustweave:qzk3uh2twkhu0fmuq50mdy3r2yzuwqvstq745hxs7tet25hfd4egcafcdmpdl",worker="002"} 3471
+ks_worker_job_counter{ip="192.168.0.24",miner="BzMiner-v11.1.0",wallet="rustweave:qzk3uh2twkhu0fmuq50mdy3r2yzuwqvstq745hxs7tet25hfd4egcafcdmpdl",worker="003"} 3399
+ks_worker_job_counter{ip="192.168.0.65",miner="BzMiner-v11.1.0",wallet="rustweave:qzk3uh2twkhu0fmuq50mdy3r2yzuwqvstq745hxs7tet25hfd4egcafcdmpdl",worker="001"} 3425
 
 ```
 
@@ -76,7 +76,7 @@ Note: This does requires that docker is installed.
 
   
 
-`docker compose -f docker-compose-all.yml up -d` will run the bridge with default settings. This assumes a local kaspad node with default port settings and exposes port 5555 to incoming stratum connections.
+`docker compose -f docker-compose-all.yml up -d` will run the bridge with default settings. This assumes a local rustweaved node with default port settings and exposes port 5555 to incoming stratum connections.
 
   
 
@@ -91,12 +91,12 @@ Most of the stats on the graph are averaged over an hour time period, so keep in
 
 Note: This does not require pulling down the repo, it only requires that docker is installed.
 
-`docker run -p 5555:5555 onemorebsmith/kaspa_bridge:latest --log=false` will run the bridge with default settings. This assumes a local kaspad node with default port settings and exposes port 5555 to incoming stratum connections.
+`docker run -p 5555:5555 onemorebsmith/rustweave_bridge:latest --log=false` will run the bridge with default settings. This assumes a local rustweaved node with default port settings and exposes port 5555 to incoming stratum connections.
 
 
 Detailed:
 
-`docker run -p {stratum_port}:5555 onemorebsmith/kaspa_bridge  --log=false --kaspa={kaspad_address} --stats={false}` will run the bridge targeting a kaspad node at {kaspad_address}. stratum port accepting connections on {stratum_port}, and only logging connection activity, found blocks, and errors
+`docker run -p {stratum_port}:5555 onemorebsmith/rustweave_bridge  --log=false --rustweave={rustweaved_address} --stats={false}` will run the bridge targeting a rustweaved node at {rustweaved_address}. stratum port accepting connections on {stratum_port}, and only logging connection activity, found blocks, and errors
 
   
 
@@ -106,7 +106,7 @@ Install go 1.18 using whatever package manager is approprate for your system
 
   
 
-run `cd cmd/kaspabridge;go build .`
+run `cd cmd/rustweavestratum;go build .`
 
   
 
@@ -114,8 +114,8 @@ Modify the config file in ./cmd/bridge/config.yaml with your setup, the file com
 
   
 
-run `./kaspabridge` in the `cmd/kaspabridge` directory
+run `./rustweavestratum` in the `cmd/rustweavestratum` directory
 
   
 
-all-in-one (build + run) `cd cmd/kaspabridge/;go build .;./kaspabridge`
+all-in-one (build + run) `cd cmd/rustweavestratum/;go build .;./rustweavestratum`

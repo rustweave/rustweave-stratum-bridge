@@ -1,4 +1,4 @@
-package kaspastratum
+package rustweavestratum
 
 import (
 	"fmt"
@@ -9,12 +9,12 @@ import (
 	"sync"
 	"time"
 
-	"github.com/kaspanet/kaspad/app/appmessage"
-	"github.com/kaspanet/kaspad/domain/consensus/model/externalapi"
-	"github.com/kaspanet/kaspad/domain/consensus/utils/consensushashing"
-	"github.com/kaspanet/kaspad/domain/consensus/utils/pow"
-	"github.com/kaspanet/kaspad/infrastructure/network/rpcclient"
-	"github.com/onemorebsmith/kaspastratum/src/gostratum"
+	"github.com/rustweave-network/rustweaved/app/appmessage"
+	"github.com/rustweave-network/rustweaved/domain/consensus/model/externalapi"
+	"github.com/rustweave-network/rustweaved/domain/consensus/utils/consensushashing"
+	"github.com/rustweave-network/rustweaved/domain/consensus/utils/pow"
+	"github.com/rustweave-network/rustweaved/infrastructure/network/rpcclient"
+	"github.com/rustweave/rustweave-stratum-bridge/src/gostratum"
 	"github.com/pkg/errors"
 	"go.uber.org/atomic"
 	"go.uber.org/zap"
@@ -32,16 +32,16 @@ type WorkStats struct {
 }
 
 type shareHandler struct {
-	kaspa        *rpcclient.RPCClient
+	rustweave        *rpcclient.RPCClient
 	stats        map[string]*WorkStats
 	statsLock    sync.Mutex
 	overall      WorkStats
 	tipBlueScore uint64
 }
 
-func newShareHandler(kaspa *rpcclient.RPCClient) *shareHandler {
+func newShareHandler(rustweave *rpcclient.RPCClient) *shareHandler {
 	return &shareHandler{
-		kaspa:     kaspa,
+		rustweave:     rustweave,
 		stats:     map[string]*WorkStats{},
 		statsLock: sync.Mutex{},
 	}
@@ -233,7 +233,7 @@ func (sh *shareHandler) submit(ctx *gostratum.StratumContext,
 		Header:       mutable.ToImmutable(),
 		Transactions: block.Transactions,
 	}
-	_, err := sh.kaspa.SubmitBlock(block)
+	_, err := sh.rustweave.SubmitBlock(block)
 	blockhash := consensushashing.BlockHash(block)
 	// print after the submit to get it submitted faster
 	ctx.Logger.Info(fmt.Sprintf("Submitted block %s", blockhash))
@@ -294,7 +294,7 @@ func (sh *shareHandler) startStatsThread() error {
 		str += "\n-------------------------------------------------------------------------------\n"
 		str += fmt.Sprintf("                | %14.14s | %14.14s | %12d | %11s",
 			rateStr, ratioStr, sh.overall.BlocksFound.Load(), time.Since(start).Round(time.Second))
-		str += "\n========================================================== ks_bridge_" + version + " ===\n"
+		str += "\n========================================================== rwe_bridge_" + version + " ===\n"
 		sh.statsLock.Unlock()
 		log.Println(str)
 	}

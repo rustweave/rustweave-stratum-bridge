@@ -1,12 +1,12 @@
-package kaspastratum
+package rustweavestratum
 
 import (
 	"fmt"
 	"net/http"
 	"sync"
 
-	"github.com/kaspanet/kaspad/app/appmessage"
-	"github.com/onemorebsmith/kaspastratum/src/gostratum"
+	"github.com/rustweave-network/rustweaved/app/appmessage"
+	"github.com/rustweave/rustweave-stratum-bridge/src/gostratum"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 	"github.com/prometheus/client_golang/prometheus/promhttp"

@@ -1,4 +1,4 @@
-package kaspastratum
+package rustweavestratum
 
 type ErrorShortCodeT string
 

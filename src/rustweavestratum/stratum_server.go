@@ -1,4 +1,4 @@
-package kaspastratum
+package rustweavestratum
 
 import (
 	"context"
@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/mattn/go-colorable"
-	"github.com/onemorebsmith/kaspastratum/src/gostratum"
+	"github.com/rustweave/rustweave-stratum-bridge/src/gostratum"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
@@ -18,7 +18,7 @@ const minBlockWaitTime = 500 * time.Millisecond
 
 type BridgeConfig struct {
 	StratumPort     string        `yaml:"stratum_port"`
-	RPCServer       string        `yaml:"kaspad_address"`
+	RPCServer       string        `yaml:"rustweaved_address"`
 	PromPort        string        `yaml:"prom_port"`
 	PrintStats      bool          `yaml:"print_stats"`
 	UseLogFile      bool          `yaml:"log_to_file"`
@@ -63,7 +63,7 @@ func ListenAndServe(cfg BridgeConfig) error {
 	if blockWaitTime < minBlockWaitTime {
 		blockWaitTime = minBlockWaitTime
 	}
-	ksApi, err := NewKaspaAPI(cfg.RPCServer, blockWaitTime, logger)
+	ksApi, err := NewrustweaveAPI(cfg.RPCServer, blockWaitTime, logger)
 	if err != nil {
 		return err
 	}
@@ -76,7 +76,7 @@ func ListenAndServe(cfg BridgeConfig) error {
 		go http.ListenAndServe(cfg.HealthCheckPort, nil)
 	}
 
-	shareHandler := newShareHandler(ksApi.kaspad)
+	shareHandler := newShareHandler(ksApi.rustweaved)
 	minDiff := cfg.MinShareDiff
 	if minDiff < 1 {
 		minDiff = 1
